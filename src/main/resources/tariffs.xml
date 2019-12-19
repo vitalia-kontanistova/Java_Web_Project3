@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tns:tariffs xmlns:tns="http://by.epam.xml_parser/tariffs"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://by.epam.xml_parser/tariffs tariffs.xsd">
+
+    <tariff id="1" name="One" operatorName="First Operator">
+        <payroll>10</payroll>
+        <callPrices callsInsideNetworks="0.3" callsInOtherNetworks="0.3" callsToLandLine="0.4"/>
+        <smsPrice>0.5</smsPrice>
+        <parameters favouriteNumber="0" tariffication="ONE_MINUTE" connectionPayment="9.9"/>
+    </tariff>
+
+    <tariff id="2" name="One+" operatorName="First Operator">
+        <payroll>5</payroll>
+        <callPrices callsInsideNetworks="0.2" callsInOtherNetworks="0.3" callsToLandLine="0.5"/>
+        <smsPrice>1.5</smsPrice>
+        <parameters favouriteNumber="5" tariffication="TWELVE_SECONDS" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="3" name="Two" operatorName="First Operator">
+        <payroll>12.5</payroll>
+        <callPrices callsInsideNetworks="0.1" callsInOtherNetworks="0.5" callsToLandLine="0.5"/>
+        <smsPrice>0.9</smsPrice>
+        <parameters favouriteNumber="0" tariffication="ONE_MINUTE" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="4" name="Two+" operatorName="First Operator">
+        <payroll>50</payroll>
+        <callPrices callsInsideNetworks="0" callsInOtherNetworks="0" callsToLandLine="0"/>
+        <smsPrice>3</smsPrice>
+        <parameters favouriteNumber="0" tariffication="ONE_MINUTE" connectionPayment="10"/>
+    </tariff>
+
+    <tariff id="5" name="Three" operatorName="Second Operator">
+        <payroll>0</payroll>
+        <callPrices callsInsideNetworks="0.5" callsInOtherNetworks="0.6" callsToLandLine="0.7"/>
+        <smsPrice>1</smsPrice>
+        <parameters favouriteNumber="0" tariffication="ONE_MINUTE" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="6" name="Three+" operatorName="Second Operator">
+        <payroll>5</payroll>
+        <callPrices callsInsideNetworks="0.05" callsInOtherNetworks="0.1" callsToLandLine="0.2"/>
+        <smsPrice>2</smsPrice>
+        <parameters favouriteNumber="10" tariffication="TWELVE_SECONDS" connectionPayment="10"/>
+    </tariff>
+
+    <tariff id="7" name="Four" operatorName="Second Operator">
+        <payroll>6.5</payroll>
+        <callPrices callsInsideNetworks="0.1" callsInOtherNetworks="0.2" callsToLandLine="0.2"/>
+        <smsPrice>0.6</smsPrice>
+        <parameters favouriteNumber="2" tariffication="ONE_MINUTE" connectionPayment="6"/>
+    </tariff>
+
+    <tariff id="8" name="Four+" operatorName="Second Operator">
+        <payroll>3</payroll>
+        <callPrices callsInsideNetworks="0.05" callsInOtherNetworks="0.1" callsToLandLine="0.1"/>
+        <smsPrice>1.6</smsPrice>
+        <parameters favouriteNumber="3" tariffication="ONE_MINUTE" connectionPayment="9.99"/>
+    </tariff>
+
+    <tariff id="9" name="Five" operatorName="Third Operator">
+        <payroll>25</payroll>
+        <callPrices callsInsideNetworks="0" callsInOtherNetworks="0.5" callsToLandLine="0.6"/>
+        <smsPrice>0.7</smsPrice>
+        <parameters favouriteNumber="0" tariffication="TWELVE_SECONDS" connectionPayment="5"/>
+    </tariff>
+
+    <tariff id="10" name="Five+" operatorName="Third Operator">
+        <payroll>20</payroll>
+        <callPrices callsInsideNetworks="0" callsInOtherNetworks="0.5" callsToLandLine="0.6"/>
+        <smsPrice>1</smsPrice>
+        <parameters favouriteNumber="0" tariffication="TWELVE_SECONDS" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="11" name="Six" operatorName="Third Operator">
+        <payroll>5</payroll>
+        <callPrices callsInsideNetworks="0.3" callsInOtherNetworks="0.5" callsToLandLine="0.5"/>
+        <smsPrice>0.85</smsPrice>
+        <parameters favouriteNumber="5" tariffication="ONE_MINUTE" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="12" name="Six+" operatorName="Third Operator">
+        <payroll>5</payroll>
+        <callPrices callsInsideNetworks="0.1" callsInOtherNetworks="0.3" callsToLandLine="0.3"/>
+        <smsPrice>1</smsPrice>
+        <parameters favouriteNumber="5" tariffication="ONE_MINUTE" connectionPayment="0"/>
+    </tariff>
+
+    <tariff id="13" name="Seven" operatorName="Fourth Operator">
+        <payroll>10</payroll>
+        <callPrices callsInsideNetworks="0.03" callsInOtherNetworks="0.1" callsToLandLine="0.13"/>
+        <smsPrice>1</smsPrice>
+        <parameters favouriteNumber="0" tariffication="ONE_MINUTE" connectionPayment="6.6"/>
+    </tariff>
+
+    <tariff id="14" name="Seven+" operatorName="Fourth Operator">
+        <payroll>10</payroll>
+        <callPrices callsInsideNetworks="0.01" callsInOtherNetworks="0.06" callsToLandLine="0.08"/>
+        <smsPrice>0</smsPrice>
+        <parameters favouriteNumber="0" tariffication="TWELVE_SECONDS" connectionPayment="10"/>
+    </tariff>
+
+    <tariff id="15" name="Eight" operatorName="Fourth Operator">
+        <payroll>15</payroll>
+        <callPrices callsInsideNetworks="0.08" callsInOtherNetworks="0.1" callsToLandLine="0.1"/>
+        <smsPrice>3</smsPrice>
+        <parameters favouriteNumber="7" tariffication="ONE_MINUTE" connectionPayment="10"/>
+    </tariff>
+
+    <tariff id="16" name="Eight+" operatorName="Fourth Operator">
+        <payroll>20</payroll>
+        <callPrices callsInsideNetworks="0" callsInOtherNetworks="0.1" callsToLandLine="0.1"/>
+        <smsPrice>3</smsPrice>
+        <parameters favouriteNumber="5" tariffication="ONE_MINUTE" connectionPayment="4.8"/>
+    </tariff>
+
+</tns:tariffs>

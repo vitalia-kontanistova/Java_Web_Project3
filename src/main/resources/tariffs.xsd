@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://by.epam.xml_parser/tariffs"
+        xmlns:tns="http://by.epam.xml_parser/tariffs">
+
+    <element name="tariffs">
+        <complexType>
+            <sequence>
+                <element name="tariff" type="tns:Tariff" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="Tariff">
+        <sequence>
+
+            <element name="payroll">
+                <simpleType>
+                    <restriction base="double">
+                        <minInclusive value="0"/>
+                        <maxInclusive value="50"/>
+                    </restriction>
+                </simpleType>
+            </element>
+
+            <element name="callPrices" type="tns:CallPrices"/>
+
+            <element name="smsPrice">
+                <simpleType>
+                    <restriction base="double">
+                        <minInclusive value="0"/>
+                        <maxInclusive value="3"/>
+                    </restriction>
+                </simpleType>
+            </element>
+
+            <element name="parameters" type="tns:Parameters"/>
+        </sequence>
+
+        <attribute name="id" type="int" use="required"/>
+        <attribute name="name" type="string" use="required"/>
+        <attribute name="operatorName" type="string" use="required"/>
+    </complexType>
+
+    <complexType name="CallPrices">
+        <attribute name="callsInsideNetworks" type="tns:CallsInsideNetworks" use="required"/>
+        <attribute name="callsInOtherNetworks" type="tns:CallsInOtherNetworks" use="required"/>
+        <attribute name="callsToLandLine" type="tns:CallsToLandLine" use="required"/>
+    </complexType>
+
+    <simpleType name="CallsInsideNetworks">
+        <restriction base="double">
+            <minInclusive value="0"/>
+            <maxInclusive value="0.5"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="CallsInOtherNetworks">
+        <restriction base="double">
+            <minInclusive value="0"/>
+            <maxInclusive value="0.6"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="CallsToLandLine">
+        <restriction base="double">
+            <minInclusive value="0"/>
+            <maxInclusive value="0.7"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Parameters">
+        <attribute name="favouriteNumber" type="tns:FavouriteNumber" use="required"/>
+        <attribute name="tariffication" type="tns:Tariffication" use="required"/>
+        <attribute name="connectionPayment" type="tns:ConnectionPayment" use="required"/>
+    </complexType>
+
+    <simpleType name="FavouriteNumber">
+        <restriction base="int">
+            <minInclusive value="0"/>
+            <maxInclusive value="10"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Tariffication">
+        <restriction base="string">
+            <enumeration value="TWELVE_SECONDS"/>
+            <enumeration value="ONE_MINUTE"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="ConnectionPayment">
+        <restriction base="double">
+            <minInclusive value="0"/>
+            <maxInclusive value="10"/>
+        </restriction>
+    </simpleType>
+</schema>
