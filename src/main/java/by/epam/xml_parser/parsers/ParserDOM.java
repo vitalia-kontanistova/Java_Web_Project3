@@ -1,9 +1,6 @@
 package by.epam.xml_parser.parsers;
 
-import by.epam.xml_parser.entity.CallPrices;
-import by.epam.xml_parser.entity.Parameters;
-import by.epam.xml_parser.entity.Tariff;
-import by.epam.xml_parser.entity.Tariffication;
+import by.epam.xml_parser.entity.*;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -35,43 +32,56 @@ public class ParserDOM {
             NamedNodeMap attributes = tariffNode.getAttributes();
 
             Tariff.Builder tariffBuilder = new Tariff.Builder();
-            tariffBuilder.setId(Integer.parseInt(attributes.getNamedItem("id").getNodeValue()));
-
-            tariffBuilder.setName(attributes.getNamedItem("name").getNodeValue());
-            tariffBuilder.setOperatorName(attributes.getNamedItem("operatorName").getNodeValue());
+            parseTariffAttributes(tariffBuilder, attributes);
 
             NodeList tariffInfoNode = tariffNode.getChildNodes();
-
             for (int j = 0; j < tariffInfoNode.getLength(); j++) {
                 Node tempNode = tariffInfoNode.item(j);
-                if (tempNode.getNodeName().equals("payroll")) {
-                    tariffBuilder.setPayroll(Double.parseDouble(tempNode.getChildNodes().item(0).getNodeValue()));
-                }
-                if (tempNode.getNodeName().equals("callPrices")) {
-                    attributes = tempNode.getAttributes();
 
-                    CallPrices.Builder callPriceBuilder = new CallPrices.Builder();
-                    tariffBuilder.setCallPrices(callPriceBuilder.build());
-                    callPriceBuilder.setCallsInsideNetworks(Double.parseDouble(attributes.getNamedItem("callsInsideNetworks").getNodeValue()));
-                    callPriceBuilder.setCallsInOtherNetworks(Double.parseDouble(attributes.getNamedItem("callsInOtherNetworks").getNodeValue()));
-                    callPriceBuilder.setCallsToLandLine(Double.parseDouble(attributes.getNamedItem("callsToLandLine").getNodeValue()));
-                }
-                if (tempNode.getNodeName().equals("smsPrice")) {
-                    tariffBuilder.setSmsPrice(Double.parseDouble(tempNode.getChildNodes().item(0).getNodeValue()));
-                }
-                if (tempNode.getNodeName().equals("parameters")) {
-                    attributes = tempNode.getAttributes();
-
-                    Parameters.Builder parametersBuilder = new Parameters.Builder();
-                    tariffBuilder.setParameters(parametersBuilder.build());
-                    parametersBuilder.setFavouriteNumbers(Integer.parseInt(attributes.getNamedItem("favouriteNumber").getNodeValue()));
-                    parametersBuilder.setTariffication(Tariffication.valueOf(attributes.getNamedItem("tariffication").getNodeValue()));
-                    parametersBuilder.setConnectionPayment(Double.parseDouble(attributes.getNamedItem("connectionPayment").getNodeValue()));
+                switch (TariffTagName.getElementTagName(tempNode.getNodeName())) {
+                    case PAYROLL:
+                        tariffBuilder.withPayroll(Double.parseDouble(tempNode.getChildNodes().item(0).getNodeValue()));
+                        break;
+                    case CALL_PRICES:
+                        attributes = tempNode.getAttributes();
+                        parseCallPrices(tariffBuilder, attributes);
+                        break;
+                    case SMS_PRICE:
+                        tariffBuilder.withSmsPrice(Double.parseDouble(tempNode.getChildNodes().item(0).getNodeValue()));
+                        break;
+                    case PARAMETERS:
+                        attributes = tempNode.getAttributes();
+                        parseParameters(tariffBuilder, attributes);
+                        break;
+                    default:
+                        break;
                 }
             }
             tariffs.add(tariffBuilder.build());
         }
         return tariffs;
+    }
+
+    private void parseTariffAttributes(Tariff.Builder tariffBuilder, NamedNodeMap attributes) {
+        tariffBuilder.withId(Integer.parseInt(attributes.getNamedItem("id").getNodeValue()));
+        tariffBuilder.withName(attributes.getNamedItem("name").getNodeValue());
+        tariffBuilder.withOperatorName(attributes.getNamedItem("operatorName").getNodeValue());
+    }
+
+    private void parseCallPrices(Tariff.Builder tariffBuilder, NamedNodeMap attributes) {
+        CallPrices.Builder callPriceBuilder = new CallPrices.Builder();
+        callPriceBuilder.withCallsInsideNetworks(Double.parseDouble(attributes.getNamedItem("callsInsideNetworks").getNodeValue()));
+        callPriceBuilder.withCallsInOtherNetworks(Double.parseDouble(attributes.getNamedItem("callsInOtherNetworks").getNodeValue()));
+        callPriceBuilder.withCallsToLandLine(Double.parseDouble(attributes.getNamedItem("callsToLandLine").getNodeValue()));
+        tariffBuilder.withCallPrices(callPriceBuilder.build());
+    }
+
+    private void parseParameters(Tariff.Builder tariffBuilder, NamedNodeMap attributes) {
+        Parameters.Builder parametersBuilder = new Parameters.Builder();
+        parametersBuilder.withFavouriteNumbers(Integer.parseInt(attributes.getNamedItem("favouriteNumber").getNodeValue()));
+        parametersBuilder.withTariffication(Tariffication.valueOf(attributes.getNamedItem("tariffication").getNodeValue()));
+        parametersBuilder.withConnectionPayment(Double.parseDouble(attributes.getNamedItem("connectionPayment").getNodeValue()));
+        tariffBuilder.withParameters(parametersBuilder.build());
     }
 
     public static void main(String[] args) {

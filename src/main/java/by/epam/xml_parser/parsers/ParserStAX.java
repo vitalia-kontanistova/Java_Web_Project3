@@ -29,7 +29,7 @@ public class ParserStAX {
         return tariffs;
     }
 
-    private static List<Tariff> process(XMLStreamReader reader) throws XMLStreamException {
+    private List<Tariff> process(XMLStreamReader reader) throws XMLStreamException {
         List<Tariff> tariffs = new ArrayList<>();
         Tariff.Builder tariffBuilder = new Tariff.Builder();
         TariffTagName elementName = null;
@@ -38,70 +38,69 @@ public class ParserStAX {
 
             int type = reader.next();
             switch (type) {
-
                 case XMLStreamConstants.START_ELEMENT:
+
                     elementName = TariffTagName.getElementTagName(reader.getLocalName());
                     switch (elementName) {
                         case TARIFF:
                             tariffBuilder = new Tariff.Builder();
-                            tariffBuilder.setId(
-                                    Integer.parseInt(reader.getAttributeValue(null, "id")));
-                            tariffBuilder.setName(
-                                    reader.getAttributeValue(null, "name"));
-                            tariffBuilder.setOperatorName(
-                                    reader.getAttributeValue(null, "operatorName"));
+                            parseTariffAttributes(tariffBuilder, reader);
                             break;
                         case CALL_PRICES:
-                            CallPrices.Builder callPricesBuilder = new CallPrices.Builder();
-                            tariffBuilder.setCallPrices(
-                                    callPricesBuilder.build());
-                            callPricesBuilder.setCallsInsideNetworks(
-                                    Double.parseDouble(reader.getAttributeValue(null, "callsInsideNetworks")));
-                            callPricesBuilder.setCallsInOtherNetworks(
-                                    Double.parseDouble(reader.getAttributeValue(null, "callsInOtherNetworks")));
-                            callPricesBuilder.setCallsToLandLine(
-                                    Double.parseDouble(reader.getAttributeValue(null, "callsToLandLine")));
+                            parseCallPrices(tariffBuilder, reader);
                             break;
-
                         case PARAMETERS:
-                            Parameters.Builder parameterBuilder = new Parameters.Builder();
-                            tariffBuilder.setParameters(
-                                    parameterBuilder.build());
-                            parameterBuilder.setFavouriteNumbers(
-                                    Integer.parseInt(reader.getAttributeValue(null, "favouriteNumber")));
-                            parameterBuilder.setTariffication(
-                                    Tariffication.valueOf(reader.getAttributeValue(null, "tariffication")));
-                            parameterBuilder.setConnectionPayment(
-                                    Double.parseDouble(reader.getAttributeValue(null, "connectionPayment")));
+                            parseParameters(tariffBuilder, reader);
                             break;
-
                     }
                     break;
 
                 case XMLStreamConstants.CHARACTERS:
+
                     String text = reader.getText().trim();
                     if (text.isEmpty()) {
                         break;
                     }
                     switch (elementName) {
                         case PAYROLL:
-                            tariffBuilder.setPayroll(Double.parseDouble(text));
+                            tariffBuilder.withPayroll(Double.parseDouble(text));
                             break;
                         case SMS_PRICE:
-                            tariffBuilder.setSmsPrice(Double.parseDouble(text));
+                            tariffBuilder.withSmsPrice(Double.parseDouble(text));
                             break;
                     }
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:
-                    elementName = TariffTagName.getElementTagName(reader.getLocalName());
-                    switch (elementName) {
-                        case TARIFF:
-                            tariffs.add(tariffBuilder.build());
+
+                    if (TariffTagName.getElementTagName(reader.getLocalName()) == TariffTagName.TARIFF) {
+                        tariffs.add(tariffBuilder.build());
                     }
             }
         }
         return tariffs;
+    }
+
+    private void parseTariffAttributes(Tariff.Builder tariffBuilder, XMLStreamReader reader) {
+        tariffBuilder.withId(Integer.parseInt(reader.getAttributeValue(null, "id")));
+        tariffBuilder.withName(reader.getAttributeValue(null, "name"));
+        tariffBuilder.withOperatorName(reader.getAttributeValue(null, "operatorName"));
+    }
+
+    private void parseCallPrices(Tariff.Builder tariffBuilder, XMLStreamReader reader) {
+        CallPrices.Builder callPricesBuilder = new CallPrices.Builder();
+        callPricesBuilder.withCallsInsideNetworks(Double.parseDouble(reader.getAttributeValue(null, "callsInsideNetworks")));
+        callPricesBuilder.withCallsInOtherNetworks(Double.parseDouble(reader.getAttributeValue(null, "callsInOtherNetworks")));
+        callPricesBuilder.withCallsToLandLine(Double.parseDouble(reader.getAttributeValue(null, "callsToLandLine")));
+        tariffBuilder.withCallPrices(callPricesBuilder.build());
+    }
+
+    private void parseParameters(Tariff.Builder tariffBuilder, XMLStreamReader reader) {
+        Parameters.Builder parameterBuilder = new Parameters.Builder();
+        parameterBuilder.withFavouriteNumbers(Integer.parseInt(reader.getAttributeValue(null, "favouriteNumber")));
+        parameterBuilder.withTariffication(Tariffication.valueOf(reader.getAttributeValue(null, "tariffication")));
+        parameterBuilder.withConnectionPayment(Double.parseDouble(reader.getAttributeValue(null, "connectionPayment")));
+        tariffBuilder.withParameters(parameterBuilder.build());
     }
 
     public static void main(String[] args) {

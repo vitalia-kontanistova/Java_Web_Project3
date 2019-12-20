@@ -3,7 +3,8 @@ package by.epam.xml_parser.entity;
 public enum TariffTagName {
     TARIFFS, TARIFF, PAYROLL, SMS_PRICE,
     CALL_PRICES, CALLS_IN_OTHER_NETWORKS, CALLS_INSIDE_NETWORKS, CALLS_TO_LANDLINE,
-    PARAMETERS, FAVOURITE_NUMBERS, TARIFFICATION, CONNECTION_PAYMENT;
+    PARAMETERS, FAVOURITE_NUMBERS, TARIFFICATION, CONNECTION_PAYMENT,
+    WRONG_REQUEST;
 
     public static TariffTagName getElementTagName(String element) {
         switch (element) {
@@ -33,7 +34,7 @@ public enum TariffTagName {
                 return CONNECTION_PAYMENT;
 
             default:
-                throw new EnumConstantNotPresentException(TariffTagName.class, element);
+                return WRONG_REQUEST;
         }
     }
 }

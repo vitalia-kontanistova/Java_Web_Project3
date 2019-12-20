@@ -1,9 +1,6 @@
 package by.epam.xml_parser.parsers;
 
-import by.epam.xml_parser.entity.CallPrices;
-import by.epam.xml_parser.entity.Parameters;
-import by.epam.xml_parser.entity.Tariff;
-import by.epam.xml_parser.entity.Tariffication;
+import by.epam.xml_parser.entity.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -16,7 +13,7 @@ public class HandlerSAX extends DefaultHandler {
     private Tariff.Builder tariffBuilder;
     private List<Tariff> tariffs;
 
-    public List<Tariff> getTariffList(){
+    public List<Tariff> getTariffList() {
         return tariffs;
     }
 
@@ -30,46 +27,56 @@ public class HandlerSAX extends DefaultHandler {
     }
 
     public void characters(char[] buffer, int start, int length) {
-        switch (thisElement) {
-            case "payroll":
-                tariffBuilder.setPayroll(Double.parseDouble(new String(buffer, start, length)));
+        switch (TariffTagName.getElementTagName(thisElement)) {
+            case PAYROLL:
+                tariffBuilder.withPayroll(Double.parseDouble(new String(buffer, start, length)));
                 break;
-            case "smsPrice":
-                tariffBuilder.setSmsPrice(Double.parseDouble(new String(buffer, start, length)));
+            case SMS_PRICE:
+                tariffBuilder.withSmsPrice(Double.parseDouble(new String(buffer, start, length)));
                 break;
         }
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         thisElement = qName;
-        switch (thisElement) {
-            case "tariff":
-                tariffBuilder.setId(Integer.parseInt(attributes.getValue("id")));
-                tariffBuilder.setName(attributes.getValue("name"));
-                tariffBuilder.setOperatorName(attributes.getValue("operatorName"));
+        switch (TariffTagName.getElementTagName(thisElement)) {
+            case TARIFF:
+                parseTariffAttributes(tariffBuilder, attributes);
                 break;
-
-            case "callPrices":
-                CallPrices.Builder callPricesBuilder = new CallPrices.Builder();
-                tariffBuilder.setCallPrices(callPricesBuilder.build());
-                callPricesBuilder.setCallsInsideNetworks(Double.parseDouble(attributes.getValue("callsInsideNetworks")));
-                callPricesBuilder.setCallsInOtherNetworks(Double.parseDouble(attributes.getValue("callsInOtherNetworks")));
-                callPricesBuilder.setCallsToLandLine(Double.parseDouble(attributes.getValue("callsToLandLine")));
+            case CALL_PRICES:
+                parseCallPrices(tariffBuilder, attributes);
                 break;
-
-            case "parameters":
-                Parameters.Builder parameterBuilder = new Parameters.Builder();
-                tariffBuilder.setParameters(parameterBuilder.build());
-                parameterBuilder.setFavouriteNumbers(Integer.parseInt(attributes.getValue("favouriteNumber")));
-                parameterBuilder.setTariffication(Tariffication.valueOf(attributes.getValue("tariffication")));
-                parameterBuilder.setConnectionPayment(Double.parseDouble(attributes.getValue("connectionPayment")));
+            case PARAMETERS:
+                parseParameters(tariffBuilder, attributes);
                 break;
         }
-
     }
 
+    private void parseTariffAttributes(Tariff.Builder tariffBuilder, Attributes attributes) {
+        tariffBuilder.withId(Integer.parseInt(attributes.getValue("id")));
+        tariffBuilder.withName(attributes.getValue("name"));
+        tariffBuilder.withOperatorName(attributes.getValue("operatorName"));
+    }
+
+    private void parseCallPrices(Tariff.Builder tariffBuilder, Attributes attributes) {
+        CallPrices.Builder callPricesBuilder = new CallPrices.Builder();
+        callPricesBuilder.withCallsInsideNetworks(Double.parseDouble(attributes.getValue("callsInsideNetworks")));
+        callPricesBuilder.withCallsInOtherNetworks(Double.parseDouble(attributes.getValue("callsInOtherNetworks")));
+        callPricesBuilder.withCallsToLandLine(Double.parseDouble(attributes.getValue("callsToLandLine")));
+        tariffBuilder.withCallPrices(callPricesBuilder.build());
+    }
+
+    private void parseParameters(Tariff.Builder tariffBuilder, Attributes attributes) {
+        Parameters.Builder parameterBuilder = new Parameters.Builder();
+        parameterBuilder.withFavouriteNumbers(Integer.parseInt(attributes.getValue("favouriteNumber")));
+        parameterBuilder.withTariffication(Tariffication.valueOf(attributes.getValue("tariffication")));
+        parameterBuilder.withConnectionPayment(Double.parseDouble(attributes.getValue("connectionPayment")));
+        tariffBuilder.withParameters(parameterBuilder.build());
+    }
+
+
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (thisElement.equals("parameters")) {
+        if (TariffTagName.getElementTagName(thisElement) == TariffTagName.PARAMETERS) {
             tariffs.add(tariffBuilder.build());
             tariffBuilder = new Tariff.Builder();
         }

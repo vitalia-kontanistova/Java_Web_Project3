@@ -31,6 +31,5 @@ public class ParserSAX {
         for (Tariff tariff : tariffs1) {
             System.out.println(tariff);
         }
-
     }
 }

@@ -7,32 +7,39 @@ public class CallPrices {
     private double callsInsideNetworks;
     private double callsToLandLine;
 
-    private CallPrices() {
+    private CallPrices(Builder builder) {
+        this.callsInOtherNetworks = builder.callsInOtherNetworks;
+        this.callsInsideNetworks = builder.callsInsideNetworks;
+        this.callsToLandLine = builder.callsToLandLine;
     }
 
     public static class Builder {
+        private double callsInOtherNetworks;
+        private double callsInsideNetworks;
+        private double callsToLandLine;
+
         private CallPrices newCallPrices;
 
         public Builder() {
-            newCallPrices = new CallPrices();
         }
 
-        public Builder setCallsInOtherNetworks(double callsInOtherNetworks) {
-            newCallPrices.callsInOtherNetworks = callsInOtherNetworks;
+        public Builder withCallsInOtherNetworks(double callsInOtherNetworks) {
+            this.callsInOtherNetworks = callsInOtherNetworks;
             return this;
         }
 
-        public Builder setCallsInsideNetworks(double callsInsideNetworks) {
-            newCallPrices.callsInsideNetworks = callsInsideNetworks;
+        public Builder withCallsInsideNetworks(double callsInsideNetworks) {
+            this.callsInsideNetworks = callsInsideNetworks;
             return this;
         }
 
-        public Builder setCallsToLandLine(double callsToLandLine) {
-            newCallPrices.callsToLandLine = callsToLandLine;
+        public Builder withCallsToLandLine(double callsToLandLine) {
+            this.callsToLandLine = callsToLandLine;
             return this;
         }
 
         public CallPrices build() {
+            newCallPrices = new CallPrices(this);
             return newCallPrices;
         }
     }

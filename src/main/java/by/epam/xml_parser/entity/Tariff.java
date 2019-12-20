@@ -11,52 +11,72 @@ public class Tariff {
     private double smsPrice;
     private Parameters parameters;
 
-    private Tariff() {
+
+    private Tariff(Tariff.Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.operatorName = builder.operatorName;
+        this.payroll = builder.payroll;
+        this.callPrices = builder.callPrices;
+        this.smsPrice = builder.smsPrice;
+        this.parameters = builder.parameters;
     }
 
     public static class Builder {
+        private int id;
+        private String name;
+        private String operatorName;
+        private double payroll;
+        private CallPrices callPrices;
+        private double smsPrice;
+        private Parameters parameters;
+
         private Tariff newTariff;
 
         public Builder() {
-            newTariff = new Tariff();
         }
 
-        public Builder setId(int id) {
-            newTariff.id = id;
+        public Tariff.Builder withId(int id) {
+            this.id = id;
             return this;
         }
 
-        public Builder setName(String name) {
-            newTariff.name = name;
+        public Tariff.Builder withName(String name) {
+            this.name = name;
             return this;
         }
 
-        public Builder setOperatorName(String operatorName) {
-            newTariff.operatorName = operatorName;
+        public Tariff.Builder withOperatorName(String operatorName) {
+            this.operatorName = operatorName;
             return this;
         }
 
-        public Builder setPayroll(double payroll) {
-            newTariff.payroll = payroll;
+        public Tariff.Builder withPayroll(double payroll) {
+            this.payroll = payroll;
             return this;
         }
 
-        public Builder setCallPrices(CallPrices callPrices) {
-            newTariff.callPrices = callPrices;
+        public Tariff.Builder withCallPrices(CallPrices callPrices) {
+            this.callPrices = callPrices;
             return this;
         }
 
-        public Builder setSmsPrice(double smsPrice) {
-            newTariff.smsPrice = smsPrice;
+        public Tariff.Builder withSmsPrice(double smsPrice) {
+            this.smsPrice = smsPrice;
             return this;
         }
 
-        public Builder setParameters(Parameters parameters) {
-            newTariff.parameters = parameters;
+        public Tariff.Builder withParameters(Parameters parameters) {
+            this.parameters = parameters;
             return this;
         }
 
         public Tariff build() {
+            newTariff = new Tariff(this);
+            return newTariff;
+        }
+
+        public Tariff getTariff() {
             return newTariff;
         }
     }

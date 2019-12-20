@@ -7,32 +7,39 @@ public class Parameters {
     private Tariffication tariffication;
     private double connectionPayment;
 
-    private Parameters() {
+    private Parameters(Builder builder) {
+        this.connectionPayment = builder.connectionPayment;
+        this.favouriteNumbers = builder.favouriteNumbers;
+        this.tariffication = builder.tariffication;
     }
 
     public static class Builder {
+        private int favouriteNumbers;
+        private Tariffication tariffication;
+        private double connectionPayment;
+
         private Parameters newParameters;
 
         public Builder() {
-            newParameters = new Parameters();
         }
 
-        public Builder setFavouriteNumbers(int favouriteNumbers) {
-            newParameters.favouriteNumbers = favouriteNumbers;
+        public Builder withFavouriteNumbers(int favouriteNumbers) {
+            this.favouriteNumbers = favouriteNumbers;
             return this;
         }
 
-        public Builder setTariffication(Tariffication tariffication) {
-            newParameters.tariffication = tariffication;
+        public Builder withTariffication(Tariffication tariffication) {
+            this.tariffication = tariffication;
             return this;
         }
 
-        public Builder setConnectionPayment(double connectionPayment) {
-            newParameters.connectionPayment = connectionPayment;
+        public Builder withConnectionPayment(double connectionPayment) {
+            this.connectionPayment = connectionPayment;
             return this;
         }
 
         public Parameters build() {
+            newParameters = new Parameters(this);
             return newParameters;
         }
     }
