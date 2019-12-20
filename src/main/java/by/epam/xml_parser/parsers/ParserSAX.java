@@ -10,16 +10,15 @@ import java.util.List;
 
 public class ParserSAX {
 
-    public List<Tariff> parse() {
+    public List<Tariff> parse(String path) {
         XMLReader reader;
         HandlerSAX handlerSAX = new HandlerSAX();
 
         try {
             reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(handlerSAX);
-            reader.parse("src/main/resources/tariffs.xml");
+            reader.parse(path);
         } catch (SAXException | IOException e) {
-            //log;
             e.printStackTrace();
         }
         return handlerSAX.getTariffList();
@@ -27,9 +26,9 @@ public class ParserSAX {
 
     public static void main(String[] args) {
         ParserSAX parserSAX = new ParserSAX();
-        List<Tariff> tariffs = parserSAX.parse();
+        List<Tariff> tariffs1 = parserSAX.parse("src/main/resources/tariffs.xml");
 
-        for (Tariff tariff : tariffs) {
+        for (Tariff tariff : tariffs1) {
             System.out.println(tariff);
         }
 

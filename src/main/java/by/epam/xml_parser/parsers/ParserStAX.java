@@ -14,17 +14,16 @@ import java.util.List;
 
 public class ParserStAX {
 
-    private List<Tariff> parse() {
+    private List<Tariff> parse(String path) {
         List<Tariff> tariffs = new ArrayList<>();
 
         XMLInputFactory inputFactory = XMLInputFactory.newFactory();
         try {
-            InputStream inputStream = new FileInputStream("src/main/resources/tariffs.xml");
+            InputStream inputStream = new FileInputStream(path);
             XMLStreamReader reader = inputFactory.createXMLStreamReader(inputStream);
             tariffs = process(reader);
 
         } catch (FileNotFoundException | XMLStreamException e) {
-            //log;
             e.printStackTrace();
         }
         return tariffs;
@@ -41,8 +40,7 @@ public class ParserStAX {
             switch (type) {
 
                 case XMLStreamConstants.START_ELEMENT:
-//                    elementName = TariffTagName.getElementTagName(reader.getLocalName());
-                    elementName = TariffTagName.valueOf(reader.getLocalName());
+                    elementName = TariffTagName.getElementTagName(reader.getLocalName());
                     switch (elementName) {
                         case TARIFF:
                             tariffBuilder = new Tariff.Builder();
@@ -96,8 +94,7 @@ public class ParserStAX {
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:
-//                    elementName = TariffTagName.valueOf(getElementTagName(reader.getLocalName());
-                    elementName = TariffTagName.valueOf(reader.getLocalName());
+                    elementName = TariffTagName.getElementTagName(reader.getLocalName());
                     switch (elementName) {
                         case TARIFF:
                             tariffs.add(tariffBuilder.build());
@@ -109,7 +106,7 @@ public class ParserStAX {
 
     public static void main(String[] args) {
         ParserStAX parserStAX = new ParserStAX();
-        List<Tariff> tariffs = parserStAX.parse();
+        List<Tariff> tariffs = parserStAX.parse("src/main/resources/tariffs.xml");
         for (Tariff tariff : tariffs) {
             System.out.println(tariff);
         }

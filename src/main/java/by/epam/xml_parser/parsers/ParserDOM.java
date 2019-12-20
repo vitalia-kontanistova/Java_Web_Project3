@@ -14,20 +14,19 @@ import java.util.List;
 
 public class ParserDOM {
 
-    public List<Tariff> parse() {
+    public List<Tariff> parse(String path) {
         List<Tariff> tariffs = new ArrayList<>();
 
         DOMParser domParser = new DOMParser();
         Element root;
         NodeList tariffsNodeList = null;
         try {
-            domParser.parse("src/main/resources/tariffs.xml");
+            domParser.parse(path);
             Document document = domParser.getDocument();
             root = document.getDocumentElement();
             tariffsNodeList = root.getElementsByTagName("tariff");
 
         } catch (SAXException | IOException | NullPointerException e) {
-            //log;
             e.printStackTrace();
         }
 
@@ -78,7 +77,7 @@ public class ParserDOM {
     public static void main(String[] args) {
         ParserDOM parser = new ParserDOM();
 
-        List<Tariff> tariffs = parser.parse();
+        List<Tariff> tariffs = parser.parse("src/main/resources/tariffs.xml");
         for (Tariff tariff : tariffs) {
             System.out.println(tariff);
         }
