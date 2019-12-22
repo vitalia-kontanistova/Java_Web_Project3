@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="Path">logs</Property>
+        <Property name="Log_pattern">%d{HH:mm:ss} - %-5level - %m%n
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console_Appender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${Log_pattern}"/>
+        </Console>
+        <File name="File_Appender" fileName="logs/ParserLogs.log" bufferedIO="true">
+            <PatternLayout pattern="${Log_pattern}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="Console" level="info" additivity="false">
+            <AppenderRef ref="Console_Appender"/>
+        </Logger>
+        <Logger name="File" level="info" additivity="false">
+            <AppenderRef ref="File_Appender"/>
+        </Logger>
+
+        <Root level="info" additivity="false">
+            <AppenderRef ref="Console_Appender"/>
+            <AppenderRef ref="File_Appender"/>
+        </Root>
+    </Loggers>
+</Configuration>

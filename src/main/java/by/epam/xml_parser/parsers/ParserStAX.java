@@ -1,6 +1,8 @@
 package by.epam.xml_parser.parsers;
 
 import by.epam.xml_parser.entity.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -13,8 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParserStAX {
+    private static Logger logger = LogManager.getLogger();
 
-    private List<Tariff> parse(String path) {
+    public List<Tariff> parse(String path) {
+        logger.info("StAX Parser: parsing start.");
+
         List<Tariff> tariffs = new ArrayList<>();
 
         XMLInputFactory inputFactory = XMLInputFactory.newFactory();
@@ -24,8 +29,9 @@ public class ParserStAX {
             tariffs = process(reader);
 
         } catch (FileNotFoundException | XMLStreamException e) {
-            e.printStackTrace();
+            logger.error("StAX Parser: " + e.getMessage());
         }
+        logger.info("StAX Parser: parsing end.");
         return tariffs;
     }
 
@@ -101,13 +107,5 @@ public class ParserStAX {
         parameterBuilder.withTariffication(Tariffication.valueOf(reader.getAttributeValue(null, "tariffication")));
         parameterBuilder.withConnectionPayment(Double.parseDouble(reader.getAttributeValue(null, "connectionPayment")));
         tariffBuilder.withParameters(parameterBuilder.build());
-    }
-
-    public static void main(String[] args) {
-        ParserStAX parserStAX = new ParserStAX();
-        List<Tariff> tariffs = parserStAX.parse("src/main/resources/tariffs.xml");
-        for (Tariff tariff : tariffs) {
-            System.out.println(tariff);
-        }
     }
 }

@@ -2,6 +2,8 @@ package by.epam.xml_parser.parsers;
 
 import by.epam.xml_parser.entity.*;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -10,8 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParserDOM {
+    private static Logger logger = LogManager.getLogger();
 
     public List<Tariff> parse(String path) {
+        logger.info("DOM Parser: parsing start.");
+
         List<Tariff> tariffs = new ArrayList<>();
 
         DOMParser domParser = new DOMParser();
@@ -24,7 +29,7 @@ public class ParserDOM {
             tariffsNodeList = root.getElementsByTagName("tariff");
 
         } catch (SAXException | IOException | NullPointerException e) {
-            e.printStackTrace();
+            logger.error("DOM Parser: " + e.getMessage());
         }
 
         for (int i = 0; i < tariffsNodeList.getLength(); i++) {
@@ -59,6 +64,7 @@ public class ParserDOM {
             }
             tariffs.add(tariffBuilder.build());
         }
+        logger.info("DOM Parser: parsing end.");
         return tariffs;
     }
 
@@ -82,14 +88,5 @@ public class ParserDOM {
         parametersBuilder.withTariffication(Tariffication.valueOf(attributes.getNamedItem("tariffication").getNodeValue()));
         parametersBuilder.withConnectionPayment(Double.parseDouble(attributes.getNamedItem("connectionPayment").getNodeValue()));
         tariffBuilder.withParameters(parametersBuilder.build());
-    }
-
-    public static void main(String[] args) {
-        ParserDOM parser = new ParserDOM();
-
-        List<Tariff> tariffs = parser.parse("src/main/resources/tariffs.xml");
-        for (Tariff tariff : tariffs) {
-            System.out.println(tariff);
-        }
     }
 }

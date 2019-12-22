@@ -1,6 +1,8 @@
 package by.epam.xml_parser.parsers;
 
 import by.epam.xml_parser.entity.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HandlerSAX extends DefaultHandler {
+    private static Logger logger = LogManager.getLogger();
     private String thisElement;
     private Tariff.Builder tariffBuilder;
     private List<Tariff> tariffs;
